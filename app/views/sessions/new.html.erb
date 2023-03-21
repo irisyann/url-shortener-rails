@@ -1,0 +1,22 @@
+<h1>Sign in</h1>
+
+<%= form_with url: sign_in_path do |form| %>
+
+    <div class="mb-3">
+        <%= form.label :email %>
+        <%= form.text_field :email, class: "form-control", placeholder: "Enter your email" %>
+    </div>
+
+    <div class="mb-5">
+        <%= form.label :password %>
+        <%= form.password_field :password, class: "form-control", placeholder: "Enter your password" %>
+        <div class="mt-2 float-end">
+            <%= link_to "Forgot your password?", password_reset_path %>
+        </div>
+    </div>
+
+    <div>
+        <%= form.submit "Sign In", data: { turbo: false }, class: "btn btn-primary" %>
+    </div>
+
+<% end %>
