@@ -2,9 +2,19 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
-  # root "articles#index"
-  root 'main#index'
+  root "main#index"
 
+  resources :url_creations, only: [:new, :create] do
+    resources :short_urls, only: [:new, :create] do
+      resources :geolocations, only: [:new, :create]
+    end
+  end
+
+  get "usage_report", to: "usage_reports#index"
+
+  get "/:short_path", to: "url_creations#redirect"
+
+  ######## Authentication Routes ########
   get "sign_up", to: "registrations#new"
   post "sign_up", to: "registrations#create"
 
@@ -20,5 +30,7 @@ Rails.application.routes.draw do
   post "sign_in", to: "sessions#create"
 
   delete "logout", to: "sessions#destroy"
+
+  
 
 end

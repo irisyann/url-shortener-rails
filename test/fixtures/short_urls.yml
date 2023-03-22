@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  num_clicks: 1
+  short_path: MyString
+
+two:
+  num_clicks: 1
+  short_path: MyString

@@ -18,6 +18,8 @@ class User < ApplicationRecord
     validates :password_confirmation, 
         presence: true
 
+    has_many :target_url, dependent: :destroy
+
     # has_many :urls, dependent: :destroy
     # has_many :visits, through: :urls
     # has_many :visitors, through: :visits, source: :user

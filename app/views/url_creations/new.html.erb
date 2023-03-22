@@ -1,0 +1,30 @@
+<div class="container">
+    <%
+=begin%>
+ <%= @all_url.target_url %> 
+<%
+=end%>
+
+    <div class="px-4 py-5 text-center">
+        <%# <h1 class="display-5 fw-bold">URLs are better shorter.</h1> %>
+
+        <%= form_with model: @target_url, url: url_creations_path do |form|  %>
+           <% if form.object.errors.any? %>
+                <div class="alert alert-danger">
+                    <% form.object.errors.full_messages.each do |message| %>
+                        <div><%= message %></div>
+                    <% end %>
+                </div>
+            <% end %>
+
+            <div class="mt-5 mb-3">
+                <%= form.text_field :target_url, class: "form-control", placeholder: "Enter your long URL" %>
+            </div>
+
+            <%= form.submit "Shorten URL", data: { turbo: false }, class: "btn btn-primary" %>
+        <% end %>
+    </div>
+
+    
+
+</div>

@@ -1,9 +1,20 @@
 <div class="container">
 
-    <h1>Hello worldddd</h1>
+    <div class="px-4 py-5 text-center">
+        <%# <h1 class="display-5 fw-bold">URLs are better shorter.</h1> %>
 
-    <% if Current.user %>
-        Logged in as <%= Current.user.email %>
-    <% end %>
+        <% if Current.user %>
+
+            <%= render "urls_creations#new" %>
+
+        <% else %>
+
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <%= link_to "Sign Up", sign_up_path, class: "btn btn-primary" %>
+                <%= link_to "Sign In", sign_in_path, class: "btn btn-primary" %>
+            </div>
+
+        <% end %>
+    </div>
 
 </div>

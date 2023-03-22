@@ -72,4 +72,11 @@ group :test do
 end
 
 
-########### SELF-ADDED GEMS ###########
+########### SELF-INSTALLED GEMS ###########
+
+# for scraping title tag from a url
+gem 'open-uri' # for opening a url
+gem 'nokogiri' # for parsing html
+
+# for detection of user's location
+gem 'geocoder'
