@@ -1,35 +1,45 @@
 <div class="container">
 
-    <div>
-        Short URL: <%= link_to URI.join(root_url, @short_url.short_path).to_s, URI.join(root_url, @short_url.short_path).to_s, target: :_blank  %>
-    </div>
-    <div>
-        Target URL:
-        <%= @short_url.target_url.target_url %>
-    </div>
-    <div>
-        <%= @short_url.num_clicks %>
-    </div>
+    <%= render partial: "shared/go_shorten_url_button" %>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">City</th>
-            <th scope="col">Country</th>
-            <th scope="col">Timestamp</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% @short_url.geolocation.each do |short_url| %>
-            <tr>
-                <td><%= short_url.city %></td>
-                <td><%= short_url.country %></td>
-                <td><%= short_url.created_at %></td>
-            </tr>
-        <% end %>
+    <ul class="list-group mb-5">
+        <li class="list-group-item">
+            Short URL: <%= link_to URI.join(root_url, @short_url.short_path).to_s, URI.join(root_url, @short_url.short_path).to_s, target: :_blank, class: "btn btn-light" %>
+        </li>
+        <li class="list-group-item">
+            Target URL: <%= link_to @short_url.target_url.target_url, @short_url.target_url.target_url %>
+        </li>
+        <li class="list-group-item">
+            Number of clicks: <%= @short_url.num_clicks %>
+        </li>
+    </ul>
+    
 
+    <% if @short_url.num_clicks == 0 %>
+        <div class="alert alert-warning" role="alert">
+            This short URL has no clicks yet.
+        </div>
+    <% else %>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">City</th>
+                    <th scope="col">Country</th>
+                    <th scope="col">Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% @short_url.geolocation.each do |short_url| %>
+                    <tr>
+                        <td><%= short_url.city %></td>
+                        <td><%= short_url.country %></td>
+                        <td><%= short_url.created_at %></td>
+                    </tr>
+                <% end %>
+            
+            </tbody>
+    </table>
+    <% end %>
 
-      
-    </tbody>
-  </table>
+    
 </div>

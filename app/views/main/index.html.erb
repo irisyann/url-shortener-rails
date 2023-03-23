@@ -1,7 +1,7 @@
 <div class="container">
 
     <div class="px-4 py-5 text-center">
-        <%# <h1 class="display-5 fw-bold">URLs are better shorter.</h1> %>
+        <h1 class="display-5 fw-bold">URLs are better shorter.</h1>
 
         <% if Current.user %>
 
@@ -9,7 +9,7 @@
 
         <% else %>
 
-            <div class="d-grid gap-2 col-6 mx-auto">
+            <div class="d-grid gap-2 col-3 mx-auto my-5">
                 <%= link_to "Sign Up", sign_up_path, class: "btn btn-primary" %>
                 <%= link_to "Sign In", sign_in_path, class: "btn btn-primary" %>
             </div>
