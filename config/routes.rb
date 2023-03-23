@@ -22,15 +22,16 @@ Rails.application.routes.draw do
   ######## Application Routes ########
   root "main#index"
 
-  resources :url_creations, only: [:new, :create] do
+  resources :url_creations do
     resources :short_urls, only: [:new, :create] do
       resources :geolocations, only: [:new, :create]
     end
   end
 
-  get "usage_report", to: "usage_reports#index"
-
+  get '/:short_path/stats', to: "url_creations#show"
   get "/:short_path", to: "url_creations#redirect"
   
+  # error page
+  get "error", to: "main#error"
 
 end

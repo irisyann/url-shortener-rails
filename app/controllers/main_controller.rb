@@ -4,4 +4,7 @@ class MainController < ApplicationController
             redirect_to new_url_creation_path
         end
     end
+
+    def error
+    end
 end

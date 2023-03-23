@@ -1,0 +1,44 @@
+<div class="container">
+
+  <div class="px-4 py-5 text-center">
+    <% if @target_urls.length == 0 %>
+      <div class="display-6 mb-5">No URLs shortened yet. Try it now!</div>
+    <% end %>
+
+    <%= link_to "Shorten new URL", new_url_creation_path, class: "btn btn-primary" %>
+
+  </div>    
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col" style="width: 30%">Original URL</th>
+        <th scope="col" style="width: 30%">Title tag</th>
+        <th scope="col">Short URL</th>
+        <th scope="col">Usage Report</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @target_urls.each do |target_url| %>
+        <% target_url.short_urls.each do |short_url| %>
+          <tr>
+            <% if target_url.short_urls.first == short_url %>
+              <td rowspan="<%= target_url.short_urls.count %>"><%= target_url.target_url %></td>
+              <td rowspan="<%= target_url.short_urls.count %>"><%= target_url.title_tag %></td>
+            <% end %>
+            <td>
+              <%= link_to URI.join(root_url, short_url.short_path).to_s, URI.join(root_url, short_url.short_path).to_s, target: :_blank  %>
+            </td>
+            <td>
+              <%= link_to url_creation_path(short_url.short_path) , class: "btn btn-primary rounded-circle" do %>
+                <i class="fa-sharp fa-solid fa-file-lines"></i>
+              <% end %>
+          </tr>
+        <% end %>
+
+
+      <% end %>
+      
+    </tbody>
+  </table>
+</div>

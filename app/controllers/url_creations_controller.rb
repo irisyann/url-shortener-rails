@@ -4,6 +4,14 @@ require 'nokogiri'
 class  UrlCreationsController < ApplicationController
     after_action :get_geolocation, only: [:redirect]
 
+    def index
+        # get all urls for current user
+        @target_urls = TargetUrl.where(user_id: Current.user.id)
+        puts "hi"
+        puts @target_urls
+    
+    end
+
     def new
         @target_url = TargetUrl.new
     end
@@ -27,10 +35,10 @@ class  UrlCreationsController < ApplicationController
             end
         
             # create and save new short url
-            @short_url = @target_url.short_urls.create(short_path: SecureRandom.hex(3))
+            @short_url = @target_url.short_urls.create(short_path: check_duplicate_short_path(SecureRandom.hex(3)))
             @short_url.save
 
-            redirect_to usage_report_path, notice: "Your URL has been shortened!"
+            redirect_to url_creations_path, notice: "Your URL has been shortened!"
         else
             # if target url is not valid, render new page
             render :new
@@ -49,32 +57,50 @@ class  UrlCreationsController < ApplicationController
 
         else
             # if short url does not exist, render error page
-            render :error
+            render 'main/error'
         end
     end
 
-    def get_geolocation
-        # use Geocoder gem
-        city = request.location.city
-        country = request.location.country
-        @short_url.geolocation.create(city: city, country: country)
-        
-    end
-
-    # Retrieve title tag of URL
-    def get_title_tag(url)
-        begin
-            doc = Nokogiri::HTML(URI.open(url))
-            title_tag = doc.at_css("title").text
-        rescue => e
-            title_tag = "(No title found)"
-        end
-
+    def show
+        @short_url = ShortUrl.find_by(short_path: params[:id])
     end
 
 
     private
-    def url_params
-        params.require(:target_url).permit(:target_url)
-    end
+
+        # Check for duplicate short path
+        def check_duplicate_short_path(short_path)
+            if ShortUrl.find_by(short_path: short_path).present?
+                short_path = SecureRandom.hex(3)
+                check_duplicate_short_path(short_path)
+            else
+                short_path
+            end
+        end
+
+        # Retrieve geolocation of user
+        def get_geolocation
+            # use Geocoder gem
+            if @short_url.present?
+                city = request.location.city
+                country = request.location.country
+                @short_url.geolocation.create(city: city, country: country)
+            end
+        end
+
+        # Retrieve title tag of URL
+        def get_title_tag(url)
+            begin
+                doc = Nokogiri::HTML(URI.open(url))
+                title_tag = doc.at_css("title").text
+            rescue => e
+                title_tag = "(No title found)"
+            end
+
+        end
+
+
+        def url_params
+            params.require(:target_url).permit(:target_url)
+        end
 end
