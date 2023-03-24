@@ -1,9 +1,13 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  id: 1
   num_clicks: 1
   short_path: MyString
+  target_url_id: 1
 
 two:
+  id: 2
   num_clicks: 1
   short_path: MyString
+  target_url_id: 1

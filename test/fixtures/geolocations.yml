@@ -1,7 +1,13 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  geolocation: MyString
+  id: 1
+  country: MyString
+  city: MyString
+  short_url_id: 1
 
 two:
-  geolocation: MyString
+  id: 2
+  country: MyString
+  city: MyString
+  short_url_id: 1

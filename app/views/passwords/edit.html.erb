@@ -10,13 +10,13 @@
     <% end %>
 
     <div class="mb-3">
-    <%= form.label :password %>
-    <%= form.password_field :password, class: "form-control", placeholder: "Enter your password" %>
+        <%= form.label :password %>
+        <%= form.password_field :password, class: "form-control", placeholder: "Enter your password" %>
     </div>
 
     <div class="mb-3">
-    <%= form.label :password_confirmation %>
-    <%= form.password_field :password_confirmation, class: "form-control", placeholder: "Re-enter your password" %>
+        <%= form.label :password_confirmation %>
+        <%= form.password_field :password_confirmation, class: "form-control", placeholder: "Re-enter your password" %>
     </div>
 
     <%= form.submit "Update password", data: { turbo: false }, class: "btn btn-primary" %>

@@ -13,25 +13,27 @@
     <thead>
       <tr>
         <th scope="col" style="width: 30%">Original URL</th>
-        <th scope="col" style="width: 30%">Title tag</th>
-        <th scope="col">Short URL</th>
-        <th scope="col">Usage Report</th>
+        <th scope="col" style="width: 40%">Title tag</th>
+        <th scope="col" style="width: 20%">Short URL</th>
+        <th scope=" col"style="width: 10%">Stats</th>
       </tr>
     </thead>
     <tbody>
       <% @target_urls.each do |target_url| %>
         <% target_url.short_urls.each do |short_url| %>
-          <tr>            <% if target_url.short_urls.first == short_url %>
+          <tr>     
+            <% if target_url.short_urls.first == short_url %>
               <td rowspan="<%= target_url.short_urls.count %>" style="word-break: break-all;"><%= link_to target_url.target_url, target_url.target_url %></td>
               <td rowspan="<%= target_url.short_urls.count %>"><%= target_url.title_tag %></td>
-            <% end %>
+            <% end %>            
             <td>
               <%= link_to URI.join(root_url, short_url.short_path).to_s, URI.join(root_url, short_url.short_path).to_s, target: :_blank, class: "btn btn-light" %>
-            </td>
+            </td>   
             <td>
               <%= link_to url_creation_path(short_url.short_path) , class: "btn btn-info rounded-circle" do %>
                 <i class="fa-sharp fa-solid fa-file-lines"></i>
               <% end %>
+            </td>
           </tr>
         <% end %>
 
