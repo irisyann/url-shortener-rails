@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   ######## Application Routes ########
   root "main#index"
 
-  resources :url_creations do
+  resources :url_creations, only: [:index, :new, :create, :redirect, :show] do
     resources :short_urls, only: [:new, :create] do
       resources :geolocations, only: [:new, :create]
     end

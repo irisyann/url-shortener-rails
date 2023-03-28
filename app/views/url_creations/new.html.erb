@@ -3,7 +3,7 @@
     <div class="px-4 py-5 text-center">
         <h1 class="fw-bold">URLs are better shorter.</h1>
 
-        <%= form_with model: @target_url, url: url_creations_path do |form|  %>
+        <%= form_with model: @target_url, url: url_creations_path, method: :post do |form|  %>
            <% if form.object.errors.any? %>
                 <div class="alert alert-danger">
                     <% form.object.errors.full_messages.each do |message| %>
@@ -14,6 +14,10 @@
 
             <div class="mt-5 mb-3">
                 <%= form.text_field :target_url, class: "form-control", placeholder: "Enter your long URL" %>
+            </div>
+
+            <div class="mb-5">
+                <%= form.text_field :custom_slug, class: "form-control", placeholder: "Enter your custom slug (optional)" %>
             </div>
 
             <%= form.submit "Shorten URL", data: { turbo: false }, class: "btn btn-primary" %>

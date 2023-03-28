@@ -80,3 +80,7 @@ gem 'nokogiri' # for parsing html
 
 # for detection of user's location
 gem 'geocoder'
+
+# testing
+gem 'rspec-rails'
+gem 'factory_bot_rails'

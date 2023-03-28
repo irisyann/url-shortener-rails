@@ -7,9 +7,6 @@ class  UrlCreationsController < ApplicationController
     def index
         # get all urls for current user
         @target_urls = TargetUrl.where(user_id: Current.user.id)
-        puts "hi"
-        puts @target_urls
-    
     end
 
     def new
@@ -17,33 +14,75 @@ class  UrlCreationsController < ApplicationController
     end
 
     def create
-        @target_url = TargetUrl.new(url_params)
+        # Find an existing TargetUrl with the specified target_url or initialize a new one if none exists
+        @target_url = TargetUrl.find_or_initialize_by(target_url: url_params[:target_url])
+        @target_url.user_id ||= Current.user.id
+        @target_url.title_tag ||= get_title_tag(@target_url.target_url)
+      
+        # If the TargetUrl object is new, save it to the database
+        if @target_url.new_record?
+          @target_url.save
+        end
+      
+        @custom_slug = url_params[:custom_slug]
+      
+        # If a custom slug was specified in the form submission
+        if @custom_slug.present?
 
-        # check if target url is valid
-        if @target_url.valid?
+            if !valid_short_path?(@custom_slug)
+                flash[:danger] = "Invalid custom slug. Only alphanumeric characters are allowed and it must be within 6 to 15 characters."
+                # @target_url.errors.add(:base, "Invalid custom slug. Only alphanumeric characters are allowed and it must be within 6 to 15 characters.")
+                redirect_to new_url_creation_path(target_url: @target_url.target_url, custom_slug: @custom_slug)
 
-            # check if target url already exists for current user
-            if TargetUrl.find_by(user_id: Current.user.id, target_url: @target_url.target_url).present?
-                @target_url = TargetUrl.find_by(user_id: Current.user.id, target_url: @target_url.target_url)
+
+            elsif duplicate_short_path_exists?(@custom_slug)
+                flash[:danger] = "A shortened URL with the same custom slug is taken. Please try again."
+                # @target_url.errors.add(:base, "A shortened URL with the same custom slug is taken. Please try again.")
+                redirect_to new_url_creation_path(target_url: @target_url.target_url, custom_slug: @custom_slug)
+
 
             else
-                # if target url is new, create and save new target url
-                @target_url.title_tag = get_title_tag(@target_url.target_url)
-                @target_url.user_id = Current.user.id
-                @target_url.save
 
+                if @target_url.save
+                    @short_url = @target_url.short_urls.build(short_path: @custom_slug)
+
+                    if @short_url.valid?
+                        @short_url.save
+                        redirect_to url_creations_path, notice: "Your URL has been shortened!"
+                    else
+                        @target_url.errors.add(:base, "There was an error while creating the short URL. Please try again.")
+                        render :new
+                    end
+
+                else
+                    @target_url.errors.add(:base, "There was an error while creating the short URL. Please try again.")
+                    render :new
+
+                end
             end
-        
-            # create and save new short url
-            @short_url = @target_url.short_urls.create(short_path: check_duplicate_short_path(SecureRandom.hex(3)))
-            @short_url.save
-
-            redirect_to url_creations_path, notice: "Your URL has been shortened!"
         else
-            # if target url is not valid, render new page
+          
+          if @target_url.save
+            @short_url = @target_url.short_urls.build(short_path: generate_random_short_path)
+
+            if @short_url.valid?
+                @short_url.save
+                redirect_to url_creations_path, notice: "Your URL has been shortened!"
+            else
+                @target_url.errors.add(:base, "There was an error while creating the short URL. Please try again.")
+                render :new
+            end
+          else
+            @target_url.errors.add(:base, "There was an error while creating the short URL. Please try again.")
             render :new
+          end
         end
-    end
+      rescue ActiveRecord::RecordInvalid => e
+        # If there was an error while saving the TargetUrl or ShortUrl record, add the error message to the TargetUrl object's errors and render the 'new' view
+        @target_url.errors.add(:target_url, e.message)
+        render :new
+      end
+      
 
     def redirect
         # find short url
@@ -68,11 +107,29 @@ class  UrlCreationsController < ApplicationController
 
     private
 
+        # Check valid short path of minimum 6 chars and maximum 15 chars with only alphanumeric characters
+        def valid_short_path?(short_path)
+            if (short_path.length >= 6 && short_path.length <= 15 && short_path.match?(/\A[a-zA-Z0-9]+\z/))
+                true
+            else
+                false
+            end
+        end
+
         # Check for duplicate short path
-        def check_duplicate_short_path(short_path)
+        def duplicate_short_path_exists?(short_path)
             if ShortUrl.find_by(short_path: short_path).present?
-                short_path = SecureRandom.hex(3)
-                check_duplicate_short_path(short_path)
+                true
+            else
+                false
+            end
+        end
+
+        # Generate random short path
+        def generate_random_short_path
+            short_path = SecureRandom.hex(3)
+            if duplicate_short_path_exists?(short_path)
+                generate_random_short_path
             else
                 short_path
             end
@@ -101,6 +158,6 @@ class  UrlCreationsController < ApplicationController
 
 
         def url_params
-            params.require(:target_url).permit(:target_url)
+            params.require(:target_url).permit(:target_url, :custom_slug)
         end
 end
