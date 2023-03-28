@@ -14,11 +14,11 @@ class  UrlCreationsController < ApplicationController
     end
 
     def create
-        # Find an existing TargetUrl with the specified target_url or initialize a new one if none exists
-        @target_url = TargetUrl.find_or_initialize_by(target_url: url_params[:target_url])
-        @target_url.user_id ||= Current.user.id
-        @target_url.title_tag ||= get_title_tag(@target_url.target_url)
-      
+        # Find an existing TargetUrl with the specified target_url or initialise a new one if none exists
+        @target_url = TargetUrl.find_or_initialize_by(user_id: Current.user.id, target_url: url_params[:target_url])
+        @target_url.user_id = Current.user.id
+        @target_url.title_tag = get_title_tag(url_params[:target_url])
+
         # If the TargetUrl object is new, save it to the database
         if @target_url.new_record?
           @target_url.save
@@ -39,7 +39,6 @@ class  UrlCreationsController < ApplicationController
                 flash[:danger] = "A shortened URL with the same custom slug is taken. Please try again."
                 # @target_url.errors.add(:base, "A shortened URL with the same custom slug is taken. Please try again.")
                 redirect_to new_url_creation_path(target_url: @target_url.target_url, custom_slug: @custom_slug)
-
 
             else
 
@@ -62,21 +61,22 @@ class  UrlCreationsController < ApplicationController
             end
         else
           
-          if @target_url.save
-            @short_url = @target_url.short_urls.build(short_path: generate_random_short_path)
+            if @target_url.save
+                @short_url = @target_url.short_urls.build(short_path: generate_random_short_path)
 
-            if @short_url.valid?
-                @short_url.save
-                redirect_to url_creations_path, notice: "Your URL has been shortened!"
+                if @short_url.valid?
+                    @short_url.save
+                    redirect_to url_creations_path, notice: "Your URL has been shortened!"
+                else
+                    @target_url.errors.add(:base, "There was an error while creating the short URL. Please try again.")
+                    render :new
+                end
             else
                 @target_url.errors.add(:base, "There was an error while creating the short URL. Please try again.")
                 render :new
             end
-          else
-            @target_url.errors.add(:base, "There was an error while creating the short URL. Please try again.")
-            render :new
-          end
         end
+        
       rescue ActiveRecord::RecordInvalid => e
         # If there was an error while saving the TargetUrl or ShortUrl record, add the error message to the TargetUrl object's errors and render the 'new' view
         @target_url.errors.add(:target_url, e.message)
