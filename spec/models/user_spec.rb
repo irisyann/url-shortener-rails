@@ -33,3 +33,4 @@ RSpec.describe User, type: :model do
 #     it { should have_many(:target_url).dependent(:destroy) }
 #   end
 end
+

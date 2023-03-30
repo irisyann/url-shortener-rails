@@ -1,24 +1,38 @@
-# README
+# URL Shortener
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Author: Iris Yan
 
-Things you may want to cover:
+This is a Rails project for a URL shortener.
 
-* Ruby version
+## Ruby version
 
-* System dependencies
+This project uses Ruby 2.7.6.
 
-* Configuration
+## System dependencies
 
-* Database creation
+This project uses the following gems:
 
-* Database initialization
+- `open-uri` for scraping title tag from a URL
+- `nokogiri` for parsing HTML
+- `geocoder` for detection of user's location
+- `rspec-rails` and `factory_bot_rails` for testing
 
-* How to run the test suite
+## Configuration
 
-* Services (job queues, cache servers, search engines, etc.)
+This project uses PostgreSQL for the database.
 
-* Deployment instructions
+## Database creation & initialisation
 
-* ...
+To create the database, run:
+`rails db:create`
+`rails db:migrate`
+
+## How to run the test suite
+
+This project uses RSpec for testing. To run the test suite, run:
+`rspec`
+
+## Deployment instructions
+
+To start the server, run:
+`rails server`
