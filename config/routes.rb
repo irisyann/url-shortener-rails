@@ -30,6 +30,7 @@ Rails.application.routes.draw do
 
   get '/:short_path/stats', to: "url_creations#show"
   get "/:short_path", to: "url_creations#redirect"
+  post "update_num_clicks", to: "url_creations#update_num_clicks"
   
   # error page
   get "error", to: "main#error"

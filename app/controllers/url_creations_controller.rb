@@ -82,7 +82,6 @@ class  UrlCreationsController < ApplicationController
         @target_url.errors.add(:target_url, e.message)
         render :new
       end
-      
 
     def redirect
         # find short url
@@ -90,10 +89,13 @@ class  UrlCreationsController < ApplicationController
 
         # if short url exists, redirect to target url
         if @short_url.present?
+            @num_clicks = @short_url.increment!(:num_clicks)
             @target_url = TargetUrl.find_by(id: @short_url.target_url_id)
-            redirect_to @target_url.target_url, allow_other_host: true
-            return
-
+            
+            render :show, locals { 
+                num_clicks: @num_clicks,
+                redirect_url: @target_url.target_url
+            }
         else
             # if short url does not exist, render error page
             render 'main/error'

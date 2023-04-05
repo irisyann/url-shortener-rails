@@ -1,16 +1,18 @@
+<%= javascript_include_tag 'num_click_update_dynamic' %>
+
 <div class="container">
 
     <%= render partial: "shared/go_shorten_url_button" %>
 
     <ul class="list-group mb-5">
         <li class="list-group-item">
-            Short URL: <%= link_to URI.join(root_url, @short_url.short_path).to_s, URI.join(root_url, @short_url.short_path).to_s, target: :_blank, class: "btn btn-light" %>
+            Short URL: <%= link_to URI.join(root_url, @short_url.short_path).to_s, URI.join(root_url, @short_url.short_path).to_s, target: :_blank, class: "btn btn-light", id: "click-button" %>
         </li>
         <li class="list-group-item">
             Original URL: <%= link_to @short_url.target_url.target_url, @short_url.target_url.target_url, style: "word-break: break-all;" %>
         </li>
         <li class="list-group-item">
-            Number of clicks: <%= @short_url.num_clicks %>
+            Number of clicks: <span id="num-clicks"><%= @short_url.num_clicks %></span>
         </li>
     </ul>
     
