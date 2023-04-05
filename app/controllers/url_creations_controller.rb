@@ -136,7 +136,7 @@ class  UrlCreationsController < ApplicationController
 
         def update_num_clicks
             if @short_url.present?
-                @short_url.update(num_clicks: @short_url.num_clicks + 1)
+                @short_url.increment!(:num_clicks)
             end
         end
 
