@@ -92,6 +92,7 @@ class  UrlCreationsController < ApplicationController
         if @short_url.present?
             @target_url = TargetUrl.find_by(id: @short_url.target_url_id)
             redirect_to @target_url.target_url, allow_other_host: true
+            return
 
         else
             # if short url does not exist, render error page
@@ -102,7 +103,6 @@ class  UrlCreationsController < ApplicationController
     def show
         @short_url = ShortUrl.find_by(short_path: params[:id])
     end
-
 
     private
 
@@ -134,6 +134,8 @@ class  UrlCreationsController < ApplicationController
             end
         end
 
+
+        # Increment and update number of clicks on short url
         def update_num_clicks
             if @short_url.present?
                 @short_url.increment!(:num_clicks)
