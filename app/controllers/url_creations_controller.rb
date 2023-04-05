@@ -134,7 +134,6 @@ class  UrlCreationsController < ApplicationController
             end
         end
 
-
         # Increment and update number of clicks on short url
         def update_num_clicks
             if @short_url.present?
