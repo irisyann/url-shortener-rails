@@ -2,7 +2,7 @@ require 'open-uri'
 require 'nokogiri'
 
 class  UrlCreationsController < ApplicationController
-    after_action :get_geolocation, only: [:redirect]
+    after_action :get_geolocation, :update_num_clicks, only: [:redirect]
 
     def index
         # get all urls for current user
@@ -90,7 +90,6 @@ class  UrlCreationsController < ApplicationController
 
         # if short url exists, redirect to target url
         if @short_url.present?
-            @short_url.update(num_clicks: @short_url.num_clicks + 1)
             @target_url = TargetUrl.find_by(id: @short_url.target_url_id)
             redirect_to @target_url.target_url, allow_other_host: true
 
@@ -132,6 +131,12 @@ class  UrlCreationsController < ApplicationController
                 generate_random_short_path
             else
                 short_path
+            end
+        end
+
+        def update_num_clicks
+            if @short_url.present?
+                @short_url.update(num_clicks: @short_url.num_clicks + 1)
             end
         end
 

@@ -1,9 +1,9 @@
 <div class="container">
 
-    <div class="px-4 py-5 text-center">
+    <div class="px-4 py-5 text-center row justify-content-center">
         <h1 class="fw-bold">URLs are better shorter.</h1>
 
-        <%= form_with model: @target_url, url: url_creations_path, method: :post do |form|  %>
+        <%= form_with model: @target_url, url: url_creations_path, method: :post, class: "col col-lg-6" do |form|  %>
            <% if form.object.errors.any? %>
                 <div class="alert alert-danger">
                     <% form.object.errors.full_messages.each do |message| %>

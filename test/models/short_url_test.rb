@@ -22,5 +22,6 @@ class ShortUrlTest < ActiveSupport::TestCase
     assert_not short_url2.save
   end
 
+  
 
 end
