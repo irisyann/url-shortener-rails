@@ -2,7 +2,7 @@ require 'open-uri'
 require 'nokogiri'
 
 class  UrlCreationsController < ApplicationController
-    after_action :get_geolocation, :update_num_clicks, only: [:redirect]
+    before_action :get_geolocation, :update_num_clicks, only: [:redirect]
 
     def index
         # get all urls for current user
