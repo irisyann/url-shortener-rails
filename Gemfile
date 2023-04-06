@@ -84,3 +84,7 @@ gem 'geocoder'
 # testing
 gem 'rspec-rails'
 gem 'factory_bot_rails'
+
+# https://github.com/turbolinks/turbolinks#installation-using-ruby-on-rails
+# purpose for this project is to load bootstrap icons
+gem 'turbolinks', '~> 5.2.0'
