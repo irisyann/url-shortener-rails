@@ -21,12 +21,12 @@
                 
                 <div class="mb-3">
                     <%= form.label :password %>
-                    <%= form.password_field :password, class: "form-control", placeholder: "Enter your password" %>
+                    <%= form.password_field :password, class: "form-control", placeholder: "Enter your password", required: true %>
                 </div>
 
                 <div class="mb-5">
                     <%= form.label :password_confirmation %>
-                    <%= form.password_field :password_confirmation, class: "form-control", placeholder: "Re-enter your password" %>
+                    <%= form.password_field :password_confirmation, class: "form-control", placeholder: "Re-enter your password", required: true %>
                 </div>
 
                 <div class="d-flex justify-content-center">
