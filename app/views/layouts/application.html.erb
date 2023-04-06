@@ -20,8 +20,18 @@
       <%= render partial: "shared/flash" %>
 
       <div class="container">
-        <%= yield %>
+
+        <% if content_for?(:use_form_layout) %>
+          <%= puts "peepee" %>
+          <%= render template: "layouts/form" %>
+
+        <% else %>
+          <%= yield %>
+
+        <% end %>
+
       </div>
     </div>
+
   </body>
 </html>

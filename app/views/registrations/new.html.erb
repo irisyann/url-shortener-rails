@@ -1,28 +1,49 @@
-<h1>Sign up</h1>
+<% content_for :use_form_layout do %>
+    
+    <div>
+        <% content_for :form_title do %>
+            Sign up
+        <% end %>
+    
+        <% content_for :form_subtitle do %>
+            You're one step away from creating your very own short URLs.
+        <% end %>
+    
+        <% content_for :form_body do %>
+            <%= form_with model: @user, url: sign_up_path, class: "col col-12 col-lg-6", local: true do |form| %>
+                <% if form.object.errors.any? %>
+                    <div class="alert alert-danger">
+                        <% form.object.errors.full_messages.each do |message| %>
+                            <div><%= message %></div>
+                        <% end %>
+                    </div>
+                <% end %>
 
-<%= form_with model: @user, url: sign_up_path, local: true do |form| %>
-    <% if form.object.errors.any? %>
-        <div class="alert alert-danger">
-            <% form.object.errors.full_messages.each do |message| %>
-                <div><%= message %></div>
+                <div class="mb-3">
+                    <%= form.label :email %>
+                    <%= form.text_field :email, class: "form-control", placeholder: "Enter your email", required: true  %>
+                </div>
+
+                <div class="mb-3">
+                    <%= form.label :password %>
+                    <%= form.password_field :password, class: "form-control", placeholder: "Enter your password", required: true  %>
+                </div>
+
+                <div class="mb-5">
+                    <%= form.label :password_confirmation %>
+                    <%= form.password_field :password_confirmation, class: "form-control", placeholder: "Re-enter your password", required: true  %>
+                </div>
+
+                <div class="d-flex justify-content-center mb-5">
+                    <%= form.submit "Get Started", data: { turbo: false }, class: "btn btn-primary px-5" %>
+                </div>
+
+                <div class="d-flex justify-content-center align-items-center flex-column">
+                    <p class="text-secondary mb-1">Already have an account?</p>
+                    <%= link_to "Sign In", sign_in_path, class: "btn btn-outline-primary px-5" %>
+                </div>
             <% end %>
-        </div>
-    <% end %>
-
-    <div class="mb-3">
-        <%= form.label :email %>
-        <%= form.text_field :email, class: "form-control", placeholder: "Enter your email" %>
+        <% end %>
     </div>
-
-    <div class="mb-3">
-        <%= form.label :password %>
-        <%= form.password_field :password, class: "form-control", placeholder: "Enter your password" %>
-    </div>
-
-    <div class="mb-3">
-        <%= form.label :password_confirmation %>
-        <%= form.password_field :password_confirmation, class: "form-control", placeholder: "Re-enter your password" %>
-    </div>
-
-    <%= form.submit "Get Started", data: { turbo: false }, class: "btn btn-primary" %>
+        
 <% end %>

@@ -1,7 +1,7 @@
 <div class="container">
 
     <div class="px-4 py-5 text-center row justify-content-center">
-        <h1 class="fw-bold">URLs are better shorter.</h1>
+        <p class="display-5 fw-bold">URLs are better shorter.</p>
 
         <%= form_with model: @target_url, url: url_creations_path, method: :post, class: "col col-lg-6" do |form|  %>
            <% if form.object.errors.any? %>
@@ -13,7 +13,7 @@
             <% end %>
 
             <div class="mt-5 mb-3">
-                <%= form.text_field :target_url, class: "form-control", placeholder: "Enter your long URL" %>
+                <%= form.text_field :target_url, class: "form-control", placeholder: "Enter your long URL", required: true %>
             </div>
 
             <div class="mb-5">

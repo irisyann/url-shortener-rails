@@ -1,23 +1,37 @@
-<h1>Edit Password</h1>
+<% content_for :use_form_layout do %>
+    
+    <div>
+        <% content_for :form_title do %>
+            Edit password
+        <% end %>
+    
+        <% content_for :form_subtitle do %>
+            Change your password to secure your profile.
+        <% end %>
+    
+        <% content_for :form_body do %>
+            <%= form_with model: Current.user, url: edit_password_path, local: true do |form| %>
+                <% if form.object.errors.any? %>
+                    <div class="alert alert-danger">
+                        <% form.object.errors.full_messages.each do |message| %>
+                            <div><%= message %></div>
+                        <% end %>
+                    </div>
+                <% end %>
 
-<%= form_with model: Current.user, url: edit_password_path, local: true do |form| %>
-    <% if form.object.errors.any? %>
-        <div class="alert alert-danger">
-            <% form.object.errors.full_messages.each do |message| %>
-                <div><%= message %></div>
+                <div class="mb-3">
+                    <%= form.label :password %>
+                    <%= form.password_field :password, class: "form-control", placeholder: "Enter your password" %>
+                </div>
+
+                <div class="mb-3">
+                    <%= form.label :password_confirmation %>
+                    <%= form.password_field :password_confirmation, class: "form-control", placeholder: "Re-enter your password" %>
+                </div>
+
+                <%= form.submit "Update password", data: { turbo: false }, class: "btn btn-primary" %>
             <% end %>
-        </div>
-    <% end %>
-
-    <div class="mb-3">
-        <%= form.label :password %>
-        <%= form.password_field :password, class: "form-control", placeholder: "Enter your password" %>
+        <% end %>
     </div>
-
-    <div class="mb-3">
-        <%= form.label :password_confirmation %>
-        <%= form.password_field :password_confirmation, class: "form-control", placeholder: "Re-enter your password" %>
-    </div>
-
-    <%= form.submit "Update password", data: { turbo: false }, class: "btn btn-primary" %>
+        
 <% end %>

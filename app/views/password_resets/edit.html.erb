@@ -1,23 +1,39 @@
-<h1>Reset your password</h1>
-
-<%= form_with model: @user, url: password_reset_edit_path(token: params[:token]), local: true do |form| %>
-    <% if form.object.errors.any? %>
-        <div class="alert alert-danger">
-            <% form.object.errors.full_messages.each do |message| %>
-                <div><%= message %></div>
-            <% end %>
-        </div>
-    <% end %>
+<% content_for :use_form_layout do %>
     
-    <div class="mb-3">
-        <%= form.label :password %>
-        <%= form.password_field :password, class: "form-control", placeholder: "Enter your password" %>
-    </div>
+    <div>
+        <% content_for :form_title do %>
+            Reset your password
+        <% end %>
+    
+        <% content_for :form_subtitle do %>
+            Set a secure password that is easy to remember but hard to crack.
+        <% end %>
+    
+        <% content_for :form_body do %>
+            <%= form_with model: @user, url: password_reset_edit_path(token: params[:token]), class: "col col-12 col-lg-6", local: true do |form| %>
+                <% if form.object.errors.any? %>
+                    <div class="alert alert-danger">
+                        <% form.object.errors.full_messages.each do |message| %>
+                            <div><%= message %></div>
+                        <% end %>
+                    </div>
+                <% end %>
+                
+                <div class="mb-3">
+                    <%= form.label :password %>
+                    <%= form.password_field :password, class: "form-control", placeholder: "Enter your password" %>
+                </div>
 
-    <div class="mb-3">
-        <%= form.label :password_confirmation %>
-        <%= form.password_field :password_confirmation, class: "form-control", placeholder: "Re-enter your password" %>
-    </div>
+                <div class="mb-5">
+                    <%= form.label :password_confirmation %>
+                    <%= form.password_field :password_confirmation, class: "form-control", placeholder: "Re-enter your password" %>
+                </div>
 
-    <%= form.submit "Reset Password", data: { turbo: false }, class: "btn btn-primary" %>
+                <div class="d-flex justify-content-center">
+                    <%= form.submit "Reset Password", data: { turbo: false }, class: "btn btn-primary" %>
+                </div>
+            <% end %>
+        <% end %>
+    </div>
+        
 <% end %>

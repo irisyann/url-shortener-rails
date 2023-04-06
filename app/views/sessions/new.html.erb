@@ -1,23 +1,41 @@
-<h1 class="mt-5 mb-2">Sign in</h1>
-<p class="mb-5 text-secondary">Create and access your unique shortened URLs.</p>
-
-<%= form_with url: sign_in_path, class: "col col-lg-6" do |form| %>
-
-    <div class="mb-3">
-        <%= form.label :email %>
-        <%= form.text_field :email, class: "form-control", placeholder: "Enter your email", required: true %>
-    </div>
-
-    <div class="mb-5">
-        <%= form.label :password %>
-        <%= form.password_field :password, class: "form-control", placeholder: "Enter your password", required: true  %>
-        <div class="mt-2 float-end">
-            <%= link_to "Forgot your password?", password_reset_path %>
-        </div>
-    </div>
-
+<% content_for :use_form_layout do %>
+    
     <div>
-        <%= form.submit "Sign In", data: { turbo: false }, class: "btn btn-primary" %>
-    </div>
+        <% content_for :form_title do %>
+            Sign in
+        <% end %>
+    
+        <% content_for :form_subtitle do %>
+            Create and access your unique shortened URLs.
+        <% end %>
+    
+        <% content_for :form_body do %>
+            <%= form_with url: sign_in_path, class: "col col-12 col-lg-6" do |form| %>
 
+                <div class="mb-3">
+                    <%= form.label :email %>
+                    <%= form.text_field :email, class: "form-control", placeholder: "Enter your email", required: true %>
+                </div>
+
+                <div class="mb-5">
+                    <%= form.label :password %>
+                    <%= form.password_field :password, class: "form-control", placeholder: "Enter your password", required: true  %>
+                    <div class="mt-2 float-end">
+                        <%= link_to "Forgot your password?", password_reset_path, class: "small" %>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center mb-5">
+                    <%= form.submit "Sign In", data: { turbo: false }, class: "btn btn-primary px-5" %>
+                </div>
+
+                <div class="d-flex justify-content-center align-items-center flex-column">
+                    <p class="text-secondary mb-1">Don't have an account yet?</p>
+                    <%= link_to "Sign Up", sign_up_path, class: "btn btn-outline-primary px-5" %>
+                </div>
+
+            <% end %>    
+        <% end %>
+    </div>
+        
 <% end %>
